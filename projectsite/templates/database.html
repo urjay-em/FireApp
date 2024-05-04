@@ -34,6 +34,7 @@
                 <th>Address</th>
                 <th>City</th>
                 <th>Country</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,9 @@
                     <td>{{ location.address }}</td>
                     <td>{{ location.city }}</td>
                     <td>{{ location.country }}</td>
+                    <td>
+                        <a href="{% url 'delete_location' location.id %}">Delete</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

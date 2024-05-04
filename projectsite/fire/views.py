@@ -1,5 +1,5 @@
 from django.forms import CharField
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.list import ListView
 from fire.models import Locations, Incident, FireStation
 
@@ -15,6 +15,19 @@ class HomePageView(ListView):
     model = Locations
     context_object_name = 'home'
     template_name = "home.html"
+
+
+
+def delete_location(request, location_id):
+    # Fetch the location object
+    location = get_object_or_404(Locations, id=location_id)
+    
+    if request.method == 'POST':
+        # If form is submitted, delete the location
+        location.delete()
+        return redirect('database')  # Redirect to database page after deletion
+    
+    return render(request, 'del_location.html', {'location': location})
 
 
 class ChartView(ListView):
@@ -192,6 +205,7 @@ def map_station(request):
 
      return render(request, 'map_station.html', context)
 
+
 def fire_incidents_map(request):
     locations_with_incidents = Locations.objects.prefetch_related('incident_set').values(
         'id', 'name', 'latitude', 'longitude', 'city', 'incident__severity_level', 'incident__description'
@@ -207,6 +221,7 @@ def fire_incidents_map(request):
     }
 
     return render(request, 'fire_incidents_map.html', context)
+
 
 def database_view(request):
     # Querying all locations and incidents from the database

@@ -42,8 +42,7 @@
 </div>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([9.81644, 118.72239], 3);
-  
+    var map = L.map('map').setView([9.81644, 118.72239], 4);
     var fireIcon = L.icon({
       iconUrl: "{% static 'img/fire.png' %}",
       iconSize: [50, 50],
@@ -53,8 +52,9 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
   
+    var markers = [];
+
     var locations = {{ locations|safe }};
-    var incidents = {{ incidents|safe }}
   
     // Loop through the locations and their associated incidents
     locations.forEach(function(location) {
@@ -62,9 +62,12 @@
     var longitude = parseFloat(location.longitude);
     var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
 
-    // Create popup and bind it to the marker
-    var popup = L.popup().setContent(popupContent);
-    marker.bindPopup(popup);
+    var popupContent = "<b>" + location.name + "</b><br/>" + location.city;
+        marker.bindPopup(popupContent);
+        
+        markers.push(marker);
+
+    markers.push(marker);
 });
   </script>
   
