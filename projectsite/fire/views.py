@@ -207,8 +207,10 @@ def map_station(request):
 
 
 def fire_incidents_map(request):
-    locations_with_incidents = Locations.objects.prefetch_related('incident_set').values(
-        'id', 'name', 'latitude', 'longitude', 'city', 'incident__severity_level', 'incident__description'
+    locations_with_incidents = Locations.objects.annotate(
+        num_incidents=Count('incident')
+    ).values(
+        'id', 'name', 'latitude', 'longitude', 'city', 'num_incidents'
     )
 
     # Convert latitude and longitude to float

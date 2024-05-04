@@ -42,33 +42,33 @@
 </div>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([9.81644, 118.72239], 4);
-    var fireIcon = L.icon({
+  var map = L.map('map').setView([9.81644, 118.72239], 4);
+  var fireIcon = L.icon({
       iconUrl: "{% static 'img/fire.png' %}",
       iconSize: [50, 50],
-    });
-  
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  
-    var markers = [];
+  }).addTo(map);
 
-    var locations = {{ locations|safe }};
-  
-    // Loop through the locations and their associated incidents
-    locations.forEach(function(location) {
-    var latitude = parseFloat(location.latitude);
-    var longitude = parseFloat(location.longitude);
-    var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
+  var markers = [];
 
-    var popupContent = "<b>" + location.name + "</b><br/>" + location.city;
-        marker.bindPopup(popupContent);
-        
-        markers.push(marker);
+  var locations = {{ locations|safe }};
 
-    markers.push(marker);
-});
-  </script>
+  // Loop through the locations and their associated incidents
+  locations.forEach(function(location) {
+      var latitude = parseFloat(location.latitude);
+      var longitude = parseFloat(location.longitude);
+      var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
+
+      // Adjust popup content to include the count of incidents
+      var popupContent = "<b>" + location.name + "</b><br/>" + location.city + "<br/>Incidents: " + location.num_incidents;
+      marker.bindPopup(popupContent);
+
+      markers.push(marker);
+  });
+</script>
+
   
 {% endblock %}
