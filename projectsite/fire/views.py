@@ -17,7 +17,6 @@ class HomePageView(ListView):
     template_name = "home.html"
 
 
-
 def delete_location(request, location_id):
     # Fetch the location object
     location = get_object_or_404(Locations, id=location_id)
@@ -39,6 +38,7 @@ class ChartView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         pass
+
 
 def PieCountbySeverity(request):
     query = '''
