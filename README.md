@@ -4,6 +4,10 @@
 >This project is **12 years in the making** , more than your marriage right lasted right! *chill though*
 ---
 ## Projects Overview
+- [x] Use Faker for Dummy Data
+- [x] Creating Charts using ChartJS
+- [x] Creating Map using OpenStreetMap [Fire Station] [Fire Incident]
+- [x] Create an interactive map showcasing fire incidents with the ability to filter by city.
 ---
 ### Dashboard
 ![Screenshot 2024-05-05 000418](https://github.com/Zhar-dev/FireApp/assets/108575639/93200184-844a-4ca5-8a83-b8dd8bfee771)
