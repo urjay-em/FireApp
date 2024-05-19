@@ -8,6 +8,7 @@
 - [x] Creating Charts using ChartJS
 - [x] Creating Map using OpenStreetMap [Fire Station] [Fire Incident]
 - [x] Create an interactive map showcasing fire incidents with the ability to filter by city.
+- [x] Created CRUD function to the Fire Station
 ---
 ### Dashboard
 ![Screenshot 2024-05-05 000418](https://github.com/Zhar-dev/FireApp/assets/108575639/93200184-844a-4ca5-8a83-b8dd8bfee771)
@@ -22,6 +23,11 @@
 ![Screenshot 2024-05-05 000541](https://github.com/Zhar-dev/FireApp/assets/108575639/3ebfdc49-afa1-448e-946f-2f8ae85837cc)
 ### Fire Incident
 ![Screenshot 2024-05-05 000600](https://github.com/Zhar-dev/FireApp/assets/108575639/1858400f-7bef-4d70-9e70-77e01a3842b9)
+### Fire Incident
+![Screenshot 2024-05-19 115527](https://github.com/Zhar-dev/FireApp/assets/108575639/c856fca1-f8b6-428f-87d5-7fe1fb270af9)
+![Screenshot 2024-05-19 115621](https://github.com/Zhar-dev/FireApp/assets/108575639/43bfb861-3290-4616-83cb-b72e17fac82a)
+![Screenshot 2024-05-19 115724](https://github.com/Zhar-dev/FireApp/assets/108575639/59fd5b8a-6f96-4315-b94f-3f3cbdcb0478)
+
 
 ## About the Authors
 
