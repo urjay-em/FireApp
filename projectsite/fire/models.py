@@ -31,6 +31,9 @@ class Incident(BaseModel):
     severity_level = models.CharField(max_length=45, choices=SEVERITY_CHOICES)
     description = models.CharField(max_length=250)
 
+    def __str__(self):
+        return self.description
+
 
 class FireStation(BaseModel):
     name = models.CharField(max_length=150)
@@ -39,8 +42,11 @@ class FireStation(BaseModel):
     longitude = models.DecimalField(
         max_digits=22, decimal_places=16, null=True, blank=True)
     address = models.CharField(max_length=150)
-    city = models.CharField(max_length=150)  # can be in separate table
-    country = models.CharField(max_length=150)  # can be in separate table
+    city = models.CharField(max_length=150)
+    country = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.name
 
 
 class Firefighters(BaseModel):

@@ -3,6 +3,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.list import ListView
 from fire.models import Locations, Incident, FireStation
 
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from fire.forms import IncidentForm, FireStationForm
+
+from django.urls import reverse_lazy
+
+from typing import Any
+from django.db.models.query import QuerySet
+from django.db.models import Q
+
 from django.db import connection
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
@@ -236,3 +245,41 @@ def database_view(request):
         'incidents': incidents,
     }
     return render(request, 'database.html', context)
+
+
+class IncidentList(ListView):
+    model = FireStation
+    context_object_name = 'firestation'
+    template_name = 'firestation/firestation_list.html'
+    paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super(IncidentList, self).get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") != None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(Q(name__icontains=query) |
+                        Q (address__icontains=query) |
+                        Q (city__icontains=query) |
+                        Q (country__icontains=query))
+        return qs
+
+
+class IncidentCreateView(CreateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'firestation/firestation_add.html'
+    success_url = reverse_lazy('firestation-list')
+
+
+class IncidentUpdateView(UpdateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'firestation/firestation_edit.html'
+    success_url = reverse_lazy('firestation-list')
+
+
+class IncidentDeleteView(DeleteView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'firestation/firestation_del.html'
+    success_url = reverse_lazy('firestation-list')
