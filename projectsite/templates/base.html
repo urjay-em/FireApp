@@ -28,7 +28,7 @@
     <div class="wrapper">
       <div class="main-header">
         <!-- Logo Header -->
-        <div class="logo-header" data-background-color="orange">
+        <div class="logo-header" data-background-color="blue">
           <a href="index.html" class="logo">
             <img src="{% static 'img/logo.svg' %}" alt="navbar brand" class="navbar-brand" />
           </a>
@@ -47,7 +47,7 @@
         <!-- End Logo Header -->
 
         <!-- Navbar Header -->
-        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="orange">
+        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
           <div class="container-fluid">
             <div class="collapse" id="search-nav">
               
@@ -70,7 +70,7 @@
               <div class="info">
                 <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                   <span>
-                    Zhar
+                    Jameson Mark
                     <span class="user-level">Administrator</span>
                     <span class="caret"></span>
                   </span>
@@ -99,7 +99,7 @@
               </div>
             </div>
             
-            <ul class="nav nav-danger">
+            <ul class="nav nav-primary">
               <li class="nav-item active">
                 <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
                   <i class="fas fa-home"></i>
@@ -109,13 +109,13 @@
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="{% url 'dashboard-chart' %}">
-                        <span class="sub-item">ChartsJS</span>
+                      <a href="#">
+                        <span class="sub-item">Dashboard 1</span>
                       </a>
                     </li>
                     <li>
-                      <a href="{% url 'firestation-list' %}">
-                        <span class="sub-item">Fire Station</span>
+                      <a href="#">
+                        <span class="sub-item">Dashboard 2</span>
                       </a>
                     </li>
                   </ul>
@@ -136,8 +136,8 @@
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="{% url 'database' %}">
-                        <span class="sub-item">Database</span>
+                      <a href="#">
+                        <span class="sub-item">Avatars</span>
                       </a>
                     </li>
                     <li>
@@ -179,7 +179,7 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="#">
+                      <a href="{% url 'ChartJs' %}">
                         <span class="sub-item">Chart Js</span>
                       </a>
                     </li>
