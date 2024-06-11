@@ -1,10 +1,10 @@
 from django.forms import CharField
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.list import ListView
-from fire.models import Locations, Incident, FireStation
+from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from fire.forms import IncidentForm, FireStationForm
+from fire.forms import IncidentForm, FireStationForm, LocationsForm, FirefightersForm
 
 from django.urls import reverse_lazy
 
@@ -18,7 +18,7 @@ from django.db.models.functions import ExtractMonth
 
 from django.db.models import Count
 from datetime import datetime
-
+from django.core.paginator import Paginator
 
 class HomePageView(ListView):
     model = Locations
@@ -244,7 +244,24 @@ def database_view(request):
         'locations': locations,
         'incidents': incidents,
     }
-    return render(request, 'database.html', context)
+    return render(request, 'IncidentRecords.html', context)
+
+def IncidentRecords(request):
+    # Fetch all incidents from the database
+    incidents = Incident.objects.all()
+
+    # Pass the incidents to the template
+    context = {
+        'incidents': incidents
+    }
+
+    return render(request, 'IncidentRecords.html', context)
+
+class IncidentListView(ListView):
+    model = Incident
+    template_name = 'IncidentRecords.html'  # Update with your template path
+    context_object_name = 'incidents'  # Specify the context variable name to use in the template
+    paginate_by = 10
 
 
 class IncidentList(ListView):
@@ -283,3 +300,52 @@ class IncidentDeleteView(DeleteView):
     form_class = FireStationForm
     template_name = 'firestation/firestation_del.html'
     success_url = reverse_lazy('firestation-list')
+    
+class firelocationListView(ListView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'firelocation.html'
+    success_url = reverse_lazy('fire-location')
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        locations = context['object_list']  # Paginated queryset
+        context['locations'] = locations
+        print(locations)  # Print paginated queryset to console
+        return context
+    
+class stationListView(ListView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'station_record.html'
+    context_object_name = 'firestations'
+    success_url = reverse_lazy('fire-station')
+    paginate_by = 10
+    
+    def get_queryset(self):
+        # Customize queryset if needed, e.g., ordering
+        queryset = FireStation.objects.all().order_by('name')  # Example: ordering by name
+        return queryset
+    
+class firefighterListView(ListView):
+    model = Firefighters
+    template_name = 'fire_fighter.html'
+    context_object_name = 'firefighters'
+    success_url = reverse_lazy('fire-fighters')
+    paginate_by = 10
+    
+    
+class firetruckListView(ListView):
+    model = FireTruck
+    template_name = 'fire_truck.html'
+    context_object_name = 'FireTrucks'
+    success_url = reverse_lazy('fire-trucks')
+    paginate_by = 10
+    
+class weatherListView(ListView):
+    model = WeatherConditions
+    template_name = 'wheather_condition.html'
+    context_object_name = 'weathers'
+    success_url = reverse_lazy('weather-condition')
+    paginate_by = 10

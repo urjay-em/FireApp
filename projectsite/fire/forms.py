@@ -16,3 +16,8 @@ class FireStationForm(ModelForm):
     class Meta:
         model = FireStation
         fields = "__all__"
+
+class FirefightersForm(ModelForm):
+    class Meta:
+        model = FireStation
+        fields = "__all__"
