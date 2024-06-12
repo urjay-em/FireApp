@@ -19,6 +19,10 @@ from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 from datetime import datetime
 from django.core.paginator import Paginator
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 class HomePageView(ListView):
     model = Locations
@@ -263,13 +267,17 @@ class IncidentListView(ListView):
     context_object_name = 'incidents'  # Specify the context variable name to use in the template
     paginate_by = 10
 
-
-
-
-
-
-
-
+    def get_queryset(self, *args, **kwargs):
+        qs = super(IncidentListView, self).get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            logger.debug(f"Filtering queryset with query: {query}")
+            qs = qs.filter(
+                Q(description__icontains=query) |
+                Q(location__name__icontains=query) | 
+                Q(severity_level__icontains=query)
+            )
+        return qs
 
 
 
@@ -280,13 +288,16 @@ class IncidentList(ListView):
     paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
-        qs = super(IncidentList, self).get_queryset(*args, **kwargs)
-        if self.request.GET.get("q") != None:
-            query = self.request.GET.get('q')
-            qs = qs.filter(Q(name__icontains=query) |
-                        Q (address__icontains=query) |
-                        Q (city__icontains=query) |
-                        Q (country__icontains=query))
+        qs = super(IncidentListView, self).get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            logger.debug(f"Filtering queryset with query: {query}")
+            qs = qs.filter(
+                Q(description__icontains=query) |
+                Q(location__name__icontains=query) |  # Assuming Locations model has a 'name' field
+                Q(severity_level__icontains=query) |
+                Q(date_time__icontains=query)
+            )
         return qs
 
 class IncidentCreateView(CreateView):
@@ -312,7 +323,7 @@ class IncidentDeleteView(DeleteView):
 
 
 
-
+logger = logging.getLogger(__name__)
     
 class firelocationListView(ListView):
     model = Locations
@@ -326,6 +337,19 @@ class firelocationListView(ListView):
         locations = context['object_list']  # Paginated queryset
         context['locations'] = locations
         return context
+    
+    def get_queryset(self, *args, **kwargs):
+        qs = super(firelocationListView, self).get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            logger.debug(f"Filtering queryset with query: {query}")
+            qs = qs.filter(
+                Q(name__icontains=query) |
+                Q(address__icontains=query) |
+                Q(city__icontains=query) |
+                Q(country__icontains=query)
+            )
+        return qs
     
 class firelocationCreateView(CreateView):
     model = Locations
@@ -368,6 +392,18 @@ class stationListView(ListView):
         # Customize queryset if needed, e.g., ordering
         queryset = FireStation.objects.all().order_by('name')  # Example: ordering by name
         return queryset
+    def get_queryset(self, *args, **kwargs):
+        qs = super(stationListView, self).get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            logger.debug(f"Filtering queryset with query: {query}")
+            qs = qs.filter(
+                Q(name__icontains=query) |
+                Q(address__icontains=query) |
+                Q(city__icontains=query) |
+                Q(country__icontains=query)
+            )
+        return qs
     
 class StationCreateView(CreateView):
     model = Incident
@@ -406,6 +442,25 @@ class firefighterListView(ListView):
     success_url = reverse_lazy('fire-fighters')
     paginate_by = 10
     
+    def get_queryset(self, *args, **kwargs):
+        qs = super(firefighterListView, self).get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+
+        if query:
+            words = query.split()
+            query_filters = Q()
+
+            for word in words:
+                query_filters |= Q(name__icontains=word)
+                query_filters |= Q(rank__icontains=word)
+                query_filters |= Q(experience_level__icontains=word)
+                query_filters |= Q(station__icontains=word)
+
+            logger.debug(f"Filtering queryset with query: {query}")
+            qs = qs.filter(query_filters)
+
+        return qs
+    
 class firefighterCreateView(CreateView):
     model = Firefighters
     form_class = FirefightersForm
@@ -440,6 +495,15 @@ class firetruckListView(ListView):
     success_url = reverse_lazy('fire-truck')
     paginate_by = 10
     
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            logger.debug(f"Filtering queryset with query: {query}")
+            # Filter based on truck_number
+            qs = qs.filter(truck_number__icontains=query)
+        return qs
+    
 class firetruckCreateView(CreateView):
     model = FireTruck
     form_class = FiretruckForm
@@ -462,8 +526,7 @@ class firetruckDeleteView(DeleteView):
     
     
     
-    
-    
+     
     
 class weatherListView(ListView):
     model = WeatherConditions
@@ -471,6 +534,17 @@ class weatherListView(ListView):
     context_object_name = 'weathers'
     success_url = reverse_lazy('weather-condition')
     paginate_by = 10
+    
+    def get_queryset(self, *args, **kwargs):
+        qs = super(weatherListView, self).get_queryset(*args, **kwargs)
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            logger.debug(f"Filtering queryset with query: {query}")
+            qs = qs.filter(
+                Q(incident__description__icontains=query) |
+                Q(weather_description__icontains=query)
+            )
+        return qs
 
 class weatherCreateView(CreateView):
     model = WeatherConditions
