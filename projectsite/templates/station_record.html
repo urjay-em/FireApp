@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="pull-right">
-                                    <a href="" class="btn btn-success btn-rounded">Add Station</a>
+                                    <a href="{% url 'station-add' %}" class="btn btn-success btn-rounded">Add Station</a>
                                 </div>
                             </div>
                         </div>
@@ -53,8 +53,8 @@
                                             <td>{{ firestation.city }}</td>
                                             <td>{{ firestation.country }}</td>
                                             <td>
-                                                <a href="">Edit</a>
-                                                <a href="" class="text-danger">Delete</a>
+                                                <a href="{% url 'station-update' firestation.pk %}">Edit</a>
+                                                <a href="{% url 'station-delete' firestation.pk %}" class="text-danger">Delete</a>
                                             </td>
                                         </tr>
                                     {% endfor %}

@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="pull-right">
-                                <a href="" class="btn btn-success btn-rounded">Add L    ocation</a>
+                                <a href="{% url 'location-add' %}" class="btn btn-success btn-rounded">Add Location</a>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,6 @@
                                     <th>City</th>
                                     <th>Country</th>
                                     <th>Actions</th>
-                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,13 +54,22 @@
                                         <td>{{ location.city }}</td>
                                         <td>{{ location.country }}</td>
                                         <td>
-                                            <a href="">Edit</a>
-                                            <a href="" class="text-danger">Delete</a>
+                                            <a href="{% url 'location-update' location.pk %}">Edit</a>
+                                            <a href="{% url 'location-delete' location.pk %}" class="text-danger">Delete</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        <!-- Debug information -->
+                        <div>
+                            {% if is_paginated %}
+                                <p>Page {{ page_obj.number }} of {{ paginator.num_pages }}.</p>
+                            {% else %}
+                                <p>No pagination.</p>
+                            {% endif %}
+                        </div>
+                        <!-- Pagination -->
                         {% include 'includes/pagination.html' %}
                     </div>
                 </div>

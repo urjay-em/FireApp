@@ -4,7 +4,7 @@ from django.views.generic.list import ListView
 from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from fire.forms import IncidentForm, FireStationForm, LocationsForm, FirefightersForm
+from fire.forms import IncidentForm, FireStationForm, LocationsForm, FirefightersForm, FiretruckForm, WheatherForm
 
 from django.urls import reverse_lazy
 
@@ -264,6 +264,15 @@ class IncidentListView(ListView):
     paginate_by = 10
 
 
+
+
+
+
+
+
+
+
+
 class IncidentList(ListView):
     model = FireStation
     context_object_name = 'firestation'
@@ -280,26 +289,30 @@ class IncidentList(ListView):
                         Q (country__icontains=query))
         return qs
 
-
 class IncidentCreateView(CreateView):
-    model = FireStation
-    form_class = FireStationForm
-    template_name = 'firestation/firestation_add.html'
-    success_url = reverse_lazy('firestation-list')
-
+    model = Incident
+    form_class = IncidentForm
+    template_name = 'incidentrecord_add.html'
+    success_url = reverse_lazy('Int-record')
 
 class IncidentUpdateView(UpdateView):
-    model = FireStation
-    form_class = FireStationForm
-    template_name = 'firestation/firestation_edit.html'
-    success_url = reverse_lazy('firestation-list')
-
-
+    model = Incident
+    form_class = IncidentForm
+    template_name = 'incidentrecord_edit.html'
+    success_url = reverse_lazy('Int-record')
+    
+    def incident_records_edit(request):
+        return render(request, 'incidentrecord_edit.html')
+    
 class IncidentDeleteView(DeleteView):
-    model = FireStation
-    form_class = FireStationForm
-    template_name = 'firestation/firestation_del.html'
-    success_url = reverse_lazy('firestation-list')
+    model = Incident
+    template_name = 'incidentrecord_del.html'
+    success_url = reverse_lazy('Int-record')
+
+
+
+
+
     
 class firelocationListView(ListView):
     model = Locations
@@ -312,8 +325,36 @@ class firelocationListView(ListView):
         context = super().get_context_data(**kwargs)
         locations = context['object_list']  # Paginated queryset
         context['locations'] = locations
-        print(locations)  # Print paginated queryset to console
         return context
+    
+class firelocationCreateView(CreateView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'location_add.html'
+    success_url = reverse_lazy('fire-location')
+
+class firelocationUpdateView(UpdateView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'location_edit.html'
+    success_url = reverse_lazy('fire-location')
+    
+    def incident_records_edit(request):
+        return render(request, 'location_edit.html')
+    
+class firelocationDeleteView(DeleteView):
+    model = Locations
+    template_name = 'location_del.html'
+    success_url = reverse_lazy('fire-location')
+    
+    
+    
+    
+    
+    
+    
+    
+
     
 class stationListView(ListView):
     model = FireStation
@@ -328,6 +369,36 @@ class stationListView(ListView):
         queryset = FireStation.objects.all().order_by('name')  # Example: ordering by name
         return queryset
     
+class StationCreateView(CreateView):
+    model = Incident
+    form_class = FireStationForm
+    template_name = 'station_add.html'
+    success_url = reverse_lazy('fire-station')
+
+class StationUpdateView(UpdateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'station_edit.html'
+    success_url = reverse_lazy('fire-station')
+    
+    def incident_records_edit(request):
+        return render(request, 'station_edit.html')
+    
+class StationDeleteView(DeleteView):
+    model = FireStation
+    template_name = 'station_del.html'
+    success_url = reverse_lazy('fire-station')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 class firefighterListView(ListView):
     model = Firefighters
     template_name = 'fire_fighter.html'
@@ -335,13 +406,64 @@ class firefighterListView(ListView):
     success_url = reverse_lazy('fire-fighters')
     paginate_by = 10
     
+class firefighterCreateView(CreateView):
+    model = Firefighters
+    form_class = FirefightersForm
+    template_name = 'fighter_add.html'
+    success_url = reverse_lazy('fire-fighters')
+
+class firefighterUpdateView(UpdateView):
+    model = Firefighters
+    form_class = FirefightersForm
+    template_name = 'fighter_edit.html'
+    success_url = reverse_lazy('fire-fighters')
+    
+    def incident_records_edit(request):
+        return render(request, 'fighter_edit.html')
+    
+class firefighterDeleteView(DeleteView):
+    model = Firefighters
+    template_name = 'fighter_del.html'
+    success_url = reverse_lazy('fire-fighters')
+    
+    
+    
+    
+    
+    
+    
     
 class firetruckListView(ListView):
     model = FireTruck
     template_name = 'fire_truck.html'
     context_object_name = 'FireTrucks'
-    success_url = reverse_lazy('fire-trucks')
+    success_url = reverse_lazy('fire-truck')
     paginate_by = 10
+    
+class firetruckCreateView(CreateView):
+    model = FireTruck
+    form_class = FiretruckForm
+    template_name = 'truck_add.html'
+    success_url = reverse_lazy('fire-truck')
+
+class firetruckUpdateView(UpdateView):
+    model = FireTruck
+    form_class = FiretruckForm
+    template_name = 'truck_edit.html'
+    success_url = reverse_lazy('fire-truck')
+    
+    def incident_records_edit(request):
+        return render(request, 'truck_edit.html')
+    
+class firetruckDeleteView(DeleteView):
+    model = FireTruck
+    template_name = 'truck_del.html'
+    success_url = reverse_lazy('fire-truck')
+    
+    
+    
+    
+    
     
 class weatherListView(ListView):
     model = WeatherConditions
@@ -349,3 +471,23 @@ class weatherListView(ListView):
     context_object_name = 'weathers'
     success_url = reverse_lazy('weather-condition')
     paginate_by = 10
+
+class weatherCreateView(CreateView):
+    model = WeatherConditions
+    form_class = WheatherForm
+    template_name = 'wheather_add.html'
+    success_url = reverse_lazy('weather-condition')
+
+class weatherUpdateView(UpdateView):
+    model = WeatherConditions
+    form_class = WheatherForm
+    template_name = 'wheather_edit.html'
+    success_url = reverse_lazy('weather-condition')
+    
+    def incident_records_edit(request):
+        return render(request, 'wheather_edit.html')
+    
+class weatherDeleteView(DeleteView):
+    model = WeatherConditions
+    template_name = 'wheather_del.html'
+    success_url = reverse_lazy('weather-condition')

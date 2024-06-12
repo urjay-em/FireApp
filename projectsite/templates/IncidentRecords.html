@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="pull-right">
-                                    <a href="" class="btn btn-success btn-rounded">Add Incident</a>
+                                    <a href="{% url 'incidentrecord-add' %}" class="btn btn-success btn-rounded">Add Incident</a>
                                 </div>
                             </div>
                         </div>
@@ -49,8 +49,8 @@
                                             <td>{{ incident.severity_level }}</td>
                                             <td>{{ incident.description }}</td>
                                             <td>
-                                                <a href="">Edit</a>
-                                                <a href="" class="text-danger">Delete</a>
+                                                <a href="{% url 'Int-update' incident.pk %}">Edit</a>
+                                                <a href="{% url 'Int-delete' incident.pk %}" class="text-danger">Delete</a>
                                             </td>
                                         </tr>
                                     {% endfor %}

@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="pull-right">
-                                    <a href="" class="btn btn-success btn-rounded">Add Truck</a>
+                                    <a href="{% url 'truck-add' %}" class="btn btn-success btn-rounded">Add Truck</a>
                                 </div>
                             </div>
                         </div>
@@ -49,8 +49,8 @@
                                             <td>{{ truck.capacity }}</td>
                                             <td>{{ truck.station }}</td>
                                             <td>
-                                                <a href="">Edit</a>
-                                                <a href="" class="text-danger">Delete</a>
+                                                <a href="{% url 'truck-update' truck.pk %}">Edit</a>
+                                                <a href="{% url 'truck-delete' truck.pk %}" class="text-danger">Delete</a>
                                             </td>
                                         </tr>
                                     {% endfor %}

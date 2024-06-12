@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="pull-right">
-                                    <a href="" class="btn btn-success btn-rounded">Add Weather Condition</a>
+                                    <a href="{% url 'wheather-add' %}" class="btn btn-success btn-rounded">Add Weather Condition</a>
                                 </div>
                             </div>
                         </div>
@@ -51,8 +51,8 @@
                                             <td>{{ weather.wind_speed }}</td>
                                             <td>{{ weather.weather_description }}</td>
                                             <td>
-                                                <a href="">Edit</a>
-                                                <a href="" class="text-danger">Delete</a>
+                                                <a href="{% url 'wheather-update' weather.pk %}">Edit</a>
+                                                <a href="{% url 'wheather-delete' weather.pk %}" class="text-danger">Delete</a>
                                             </td>
                                         </tr>
                                     {% endfor %}
